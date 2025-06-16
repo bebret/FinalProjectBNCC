@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useContext } from 'react';
-import { CartContext } from '../../context/CartContext';
+import React, { useState } from 'react';
+import { useCart } from '../../context/CartContext'; 
 import { useRouter } from 'next/navigation';
 
 const CheckoutPage = () => {
