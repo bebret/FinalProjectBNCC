@@ -19,9 +19,7 @@ interface Product {
 }
 
 interface ProductDetailPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;  // ← NEXT.JS 15 FORMAT
 }
 
 const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
@@ -29,11 +27,23 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [productId, setProductId] = useState<string>('');
 
   useEffect(() => {
+    const getParams = async () => {
+      const resolvedParams = await params;  // ← AWAIT PARAMS
+      setProductId(resolvedParams.id);
+    };
+    
+    getParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!productId) return;
+    
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${params.id}`);
+        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
         const data = await response.json();
         setProduct(data);
       } catch (error) {
@@ -44,7 +54,7 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [productId]);
 
   const handleAddToCart = () => {
     if (product) {
