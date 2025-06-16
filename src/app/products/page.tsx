@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
+import { useCart } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
-import { useCart } from '../../../context/CartContext';
 import Image from 'next/image';
 
 interface Product {
@@ -18,40 +18,44 @@ interface Product {
   };
 }
 
-interface ProductDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
-const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
-  const router = useRouter();
-  const { addToCart } = useCart();
-  const [product, setProduct] = useState<Product | null>(null);
+const ProductsPage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [categories, setCategories] = useState<string[]>([]);
+  const { addToCart } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${params.id}`);
-        const data = await response.json();
-        setProduct(data);
+        const [productsRes, categoriesRes] = await Promise.all([
+          fetch('https://fakestoreapi.com/products'),
+          fetch('https://fakestoreapi.com/products/categories')
+        ]);
+        
+        const productsData = await productsRes.json();
+        const categoriesData = await categoriesRes.json();
+        
+        setProducts(productsData);
+        setCategories(['all', ...categoriesData]);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
-  }, [params.id]);
+    fetchProducts();
+  }, []);
 
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product);
-      alert('Product added to cart!');
-    }
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    alert('Product added to cart!');
   };
 
   if (loading) {
@@ -59,23 +63,7 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading product...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Product Not Found</h1>
-          <button
-            onClick={() => router.push('/products')}
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
-          >
-            Back to Products
-          </button>
+          <p className="mt-4 text-gray-600">Loading products...</p>
         </div>
       </div>
     );
@@ -84,17 +72,41 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        <button
-          onClick={() => router.back()}
-          className="mb-6 flex items-center text-blue-500 hover:text-blue-600"
-        >
-          ← Back
-        </button>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Products</h1>
+          <button
+            onClick={() => router.push('/cart')}
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+          >
+            View Cart
+          </button>
+        </div>
 
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
-            <div className="space-y-4">
-              <div className="relative aspect-square bg-white rounded-lg overflow-hidden">
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div 
+                className="relative h-48 bg-gray-50 cursor-pointer"
+                onClick={() => router.push(`/products/${product.id}`)}
+              >
                 <Image
                   src={product.image}
                   alt={product.title}
@@ -102,22 +114,27 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
                   className="object-contain p-4"
                 />
               </div>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <span className="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full mb-2">
-                  {product.category}
-                </span>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              
+              <div className="p-4">
+                <div className="mb-2">
+                  <span className="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                    {product.category}
+                  </span>
+                </div>
+                
+                <h3 
+                  className="font-semibold text-gray-800 mb-2 line-clamp-2 cursor-pointer hover:text-blue-600"
+                  onClick={() => router.push(`/products/${product.id}`)}
+                >
                   {product.title}
-                </h1>
-                <div className="flex items-center gap-2 mb-4">
+                </h3>
+                
+                <div className="flex items-center mb-2">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={`w-5 h-5 ${
+                        className={`w-4 h-4 ${
                           i < Math.floor(product.rating.rate)
                             ? 'text-yellow-400 fill-current'
                             : 'text-gray-300'
@@ -128,44 +145,35 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
                       </svg>
                     ))}
                   </div>
-                  <span className="text-gray-600">
-                    {product.rating.rate} ({product.rating.count} reviews)
+                  <span className="text-sm text-gray-500 ml-1">
+                    ({product.rating.count})
                   </span>
                 </div>
-              </div>
-
-              <div className="text-3xl font-bold text-green-600">
-                ${product.price.toFixed(2)}
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Description</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium"
-                >
-                  Add to Cart
-                </button>
                 
-                <button
-                  onClick={() => router.push('/cart')}
-                  className="w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                >
-                  View Cart
-                </button>
+                <div className="flex items-center justify-between">
+                  <span className="text-xl font-bold text-green-600">
+                    ${product.price.toFixed(2)}
+                  </span>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm font-medium"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No products found in this category.</p>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ProductDetailPage;
+export default ProductsPage;
