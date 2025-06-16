@@ -17,7 +17,7 @@ interface FormData {
 }
 
 const CheckoutPage = () => {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice, clearCart } = useCart(); 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -44,7 +44,6 @@ const CheckoutPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate order processing
     setTimeout(() => {
       alert('Order placed successfully!');
       clearCart();
@@ -53,7 +52,7 @@ const CheckoutPage = () => {
     }, 2000);
   };
 
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 py-16">
         <div className="container mx-auto px-4 text-center">
@@ -76,7 +75,6 @@ const CheckoutPage = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Order Summary */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
             <div className="space-y-4">
@@ -103,7 +101,6 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          {/* Checkout Form */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Billing Information</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
