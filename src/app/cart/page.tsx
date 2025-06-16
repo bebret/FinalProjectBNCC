@@ -8,7 +8,6 @@ import Image from 'next/image';
 const CartPage = () => {
   const router = useRouter();
   
-  // Add try-catch untuk safety
   let cartData;
   try {
     cartData = useCart();
@@ -32,7 +31,6 @@ const CartPage = () => {
 
   const { items, updateQuantity, removeFromCart, totalPrice } = cartData;
 
-  // Safety check for items
   if (!items || items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 py-16">
@@ -70,7 +68,6 @@ const CartPage = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-md">
               {items.map((item) => (
@@ -135,7 +132,6 @@ const CartPage = () => {
             </div>
           </div>
           
-          {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
               <h2 className="text-xl font-semibold mb-4">Order Summary</h2>

@@ -47,6 +47,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = (id: number, quantity: number) => {
+    if (quantity < 1) return;
     setItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, quantity } : item
