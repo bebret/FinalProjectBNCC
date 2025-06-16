@@ -5,7 +5,7 @@ import { CartContext } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
 
 const CheckoutPage = () => {
-  const { cartItems, totalAmount, clearCart } = useContext(CartContext);
+  const { items, totalPrice, clearCart } = useCart();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
