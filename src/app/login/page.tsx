@@ -16,12 +16,14 @@ const LoginPage = () => {
     setLoading(true);
     setError('');
 
+    // Simple validation
     if (!email || !password) {
       setError('Please fill in all fields');
       setLoading(false);
       return;
     }
 
+    // Simulate login
     setTimeout(() => {
       if (email === 'admin@test.com' && password === 'password') {
         alert('Login successful!');
@@ -85,13 +87,23 @@ const LoginPage = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">Demo: admin@test.com / password</p>
+          <p className="text-sm text-gray-600">Demo Credentials:</p>
+          <p className="text-sm text-blue-600">admin@test.com / password</p>
         </div>
 
         <div className="mt-4 text-center">
           <Link href="/" className="text-blue-500 hover:text-blue-600">
             ← Back to Home
           </Link>
+        </div>
+
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{' '}
+            <Link href="/register" className="text-blue-500 hover:text-blue-600 font-medium">
+              Sign up here
+            </Link>
+          </p>
         </div>
       </div>
     </div>
