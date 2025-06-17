@@ -49,19 +49,13 @@ export default function HomePage() {
             <p className="text-xl mb-8 max-w-2xl mx-auto">
               Your ultimate shopping destination. Discover amazing products at great prices with fast shipping and quality guarantee!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/products" 
-                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-              >
+            <div className="space-x-4">
+              <a href="/products" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 inline-block">
                 Shop Now
-              </Link>
-              <Link 
-                href="/about" 
-                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-              >
-                Learn More
-              </Link>
+              </a>
+              <a href="/register" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 inline-block">
+                Sign Up
+              </a>
             </div>
           </div>
         </div>
