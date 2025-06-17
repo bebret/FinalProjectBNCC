@@ -1,29 +1,36 @@
 # Next.js E-commerce App
 
-This is a Next.js e-commerce application that utilizes the Fake Store API to provide a seamless shopping experience. The application is built with React and TypeScript, and it incorporates various features to enhance user interaction and functionality.
+Aplikasi e-commerce berbasis Next.js yang menggunakan Fake Store API untuk menyediakan pengalaman belanja. Aplikasi ini dibangun menggunakan React dan TypeScript, serta dilengkapi dengan berbagai fitur untuk meningkatkan interaksi dan fungsionalitas pengguna.
 
-## Features
+## Fitir
 
-- **Dashboard/Landing Page**: Displays featured products and categories.
-- **Product Detail Page**: Fetches and displays details of a specific product.
-- **Shopping Cart**: Allows users to view and manage selected products.
-- **Checkout Page**: Simulates a payment process.
-- **Product Filtering**: Filter products based on rating, category, and availability.
-- **Product Sorting**: Sort products by rating, discount percentage, price, stock, and reviews.
-- **Product Search**: Search for products by name.
-- **User Authentication**: Login and registration functionality.
-- **User Profile**: Displays user information.
-- **Purchase History**: Shows the user's past purchases.
-- **Theme Switcher**: Toggle between light and dark themes.
+**Dashboard/Halaman Utama:** Menampilkan produk unggulan dan kategori.
 
-## Tech Stack
+**Halaman Detail Produk:** Mengambil dan menampilkan detail dari produk tertentu.
 
-- **Frontend**: React, Next.js, TypeScript, Tailwind CSS
-- **State Management**: Context API
-- **API Calls**: Axios
-- **Local Storage**: For storing user data and shopping cart information
+**Keranjang Belanja:** Memungkinkan pengguna melihat dan mengelola produk yang dipilih.
 
-## Setup Instructions
+**Halaman Checkout:** Menyimulasikan proses pembayaran.
+
+**Filter Produk:** Filter produk berdasarkan rating, kategori, dan ketersediaan.
+
+**Sorting Produk:** Urutkan produk berdasarkan rating, persentase diskon, harga, stok, dan ulasan.
+
+**Pencarian Produk:** Cari produk berdasarkan nama.
+
+**Autentikasi Pengguna:** Fitur login dan registrasi.
+
+
+Teknologi yang Digunakan
+**Frontend:** React, Next.js, TypeScript, Tailwind CSS
+
+**Manajemen State:** Context API
+
+**Pemanggilan API:** Axios
+
+**Penyimpanan Lokal:** Untuk menyimpan data pengguna dan informasi keranjang belanja
+
+**Cara Menjalankan Aplikasi**
 
 1. **Clone the Repository**:
    ```bash
@@ -41,17 +48,10 @@ This is a Next.js e-commerce application that utilizes the Fake Store API to pro
    npm run dev
    ```
 
-4. **Open in Browser**:
-   Navigate to `http://localhost:3000` to view the application.
+4. **Buka Browser**:
+ Akses http://localhost:3000 untuk melihat aplikasi.
 
 ## Deployment
 
-This application is deployed on Vercel. You can access the live version at: [Your Live App URL](#)
+Aplikasi ini telah dideploy di Vercel. Anda bisa mengakses versi live-nya di: https://final-project-bncc-gamma.vercel.app/
 
-## Contributing
-
-Feel free to submit issues or pull requests for any improvements or features you would like to see!
-
-## License
-
-This project is licensed under the MIT License.
