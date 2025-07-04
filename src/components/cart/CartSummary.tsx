@@ -1,17 +1,15 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../../context/CartContext';
+import React from 'react';
+import { useCart } from '../../context/CartContext';
 
 const CartSummary: React.FC = () => {
-    const { cartItems } = useContext(CartContext);
-
-    const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const { items, totalPrice } = useCart();
 
     return (
         <div className="p-4 border-t border-gray-200">
             <h2 className="text-lg font-semibold">Cart Summary</h2>
             <div className="mt-2">
-                <p className="text-sm">Total Items: {cartItems.length}</p>
-                <p className="text-lg font-bold">Total Amount: ${totalAmount.toFixed(2)}</p>
+                <p className="text-sm">Total Items: {items.length}</p>
+                <p className="text-lg font-bold">Total Amount: ${totalPrice.toFixed(2)}</p>
             </div>
         </div>
     );

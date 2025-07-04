@@ -5,14 +5,14 @@ import { useCart } from '../../context/CartContext';
 
 const CartPage = () => {
   try {
-    const { cartItems, removeFromCart, updateQuantity, clearCart, totalPrice } = useCart();
+    const { items, removeFromCart, updateQuantity, clearCart, totalPrice } = useCart();
 
     return (
       <div className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
           
-          {cartItems.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center py-16">
               <div className="bg-gray-100 rounded-lg p-8 max-w-md mx-auto">
                 <h2 className="text-xl font-semibold text-gray-600 mb-4">Your cart is empty</h2>
@@ -29,7 +29,7 @@ const CartPage = () => {
             <div className="bg-white">
               {/* Cart Items - render langsung tanpa CartItem component */}
               <div className="space-y-4 mb-8">
-                {cartItems.map(item => (
+                {items.map(item => (
                   <div key={item.id} className="flex items-center gap-4 p-6 border border-gray-200 rounded-lg shadow-sm bg-white">
                     <img 
                       src={item.image} 

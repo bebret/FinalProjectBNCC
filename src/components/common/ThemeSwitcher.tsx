@@ -1,8 +1,21 @@
-import React, { useContext } from 'react';
-import { ThemeContext } from '../../context/ThemeContext';
+import React, { useState, useEffect } from 'react';
 
 const ThemeSwitcher: React.FC = () => {
-    const { theme, toggleTheme } = useContext(ThemeContext);
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+    useEffect(() => {
+        // Get theme from localStorage on component mount
+        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' || 'light';
+        setTheme(savedTheme);
+        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+        document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    };
 
     return (
         <button
